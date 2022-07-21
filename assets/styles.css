@@ -120,7 +120,7 @@ hr {
 }
 
 .extrude:hover {
-    transition: 0.3s;
+    transition: 0.15s;
     box-shadow: 3px 3px grey;
     transform: translate(-3px, -3px);
 }
@@ -182,7 +182,12 @@ td {
 }
 
 .book_info {
-    background-color: aqua;
+    background-color: white;
     height: 30%;
     width: 100%;
+    border-radius: 0px 0px 5px 5px;
+}
+
+.product_cell:hover .book_info{
+    background-color: rgb(230, 230, 230);
 }
