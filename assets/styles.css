@@ -1,0 +1,188 @@
+body {
+    font-family: 'Courier New', Courier, monospace;
+    background-color: rgb(200, 200, 200);
+    /* background-color: rgb(190, 62, 62); */
+    margin: 0px;
+}
+
+hr {
+    position: absolute;
+    left: 50%;
+    width: 70%;
+    margin: auto;
+    background-color: rgba(128, 128, 128, 0.5);
+    border-radius: 1px;
+}
+
+#main_container {
+    width: 80%;
+    background-color: white;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#cover_container {
+    /* position: relative; */
+    /* padding: 20px; */
+    width: 100%;
+    height: 200px;
+    top: 0px;
+    box-shadow: 0px 0px 2px 2px #fff;
+}
+
+#image {
+    object-fit: cover;
+    /* position: absolute; */
+    width: 100%;
+    height: 100%;
+    /* translate: 100% 50%; */
+    filter: blur(8px);
+    /* padding: 20px; */
+}
+
+#general {
+    position: absolute;
+    top: 0px;
+    font-weight: bold;
+    padding-top: 80px;
+    padding-left: 20px;
+    font-size: 30px;
+}
+
+#bookshop {
+    position: absolute;
+    top: 0px;
+    font-weight: bold;
+    padding-top: 120px;
+    padding-left: 20px;
+    font-size: 50px;
+}
+
+#command_container {
+    /* padding: 20px; */
+    /* position: absolute; */
+    display: flex;
+    background-color: white;
+    width: 100%;
+    height: 100px;
+    /* top: 200px; */
+    /* border-top: 1px;
+    border-bottom: 1px; */
+    box-shadow: 0px 0px 2px 2px #fff;
+    border-color: black;
+    border-width: 2px;
+}
+
+#command_tools {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 20px;
+}
+
+#search_bar {
+    font-family: 'Courier New', Courier, monospace;
+    border-radius: 7px;
+    height: 25px;
+    padding: 2px;
+    padding-left: 7px;
+}
+
+#search_button {
+    border-radius: 7px;
+    height: 25px;
+    width: 40px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+#search_image {
+    margin: auto;
+    height: 10px;
+}
+
+#search_filter {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bolder;
+    display: inline-block;
+    border-radius: 7px;
+    height: 25px;
+    width: 70px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+#search_bar::placeholder {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bolder;
+    position: absolute;
+    opacity: .5;
+    color: rgb(48, 48, 48);
+}
+
+.extrude:hover {
+    transition: 0.3s;
+    box-shadow: 3px 3px grey;
+    transform: translate(-3px, -3px);
+}
+
+.extrude:not(:hover) {
+    transition: 0.3s;
+    box-shadow: 0px 0px grey;
+}
+
+hr {
+    position: absolute;
+}
+
+#products {
+    background-color: #fff;
+    box-shadow: 0px 0px 2px 2px #fff;
+    padding-bottom: 30px;
+    padding-left: 60px;
+    padding-right: 60px;
+}
+
+#product_table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+td {
+    width: 25%;
+    padding: 30px;
+}
+
+.product_cell {
+    width: 200px;
+    height: 250px;
+    margin: auto;
+    background-color: #fff;
+    border-radius: 5px;
+}
+
+.product_cell:hover {
+    background-color: rgb(240, 240, 240);
+    cursor: pointer;
+}
+
+.book_container {
+    height: 70%;
+    width: 100%;
+}
+
+.book_cover {
+    margin: auto;
+    transform: translate(0, 30px);
+    height: 100px;
+    width: 80px;
+    border: solid #000;
+    border-width: 5px;
+    border-radius: 2px;
+    background-color: #fff;
+}
+
+.book_info {
+    background-color: aqua;
+    height: 30%;
+    width: 100%;
+}
