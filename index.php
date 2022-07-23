@@ -42,8 +42,14 @@
                                 var year_h = document.getElementById("year_h").value;
                                 var genre = document.getElementById("genre_s").value;
                                 var search = document.getElementById("search_bar").value;
-                                if (year_l != "" || year_h != "" || genre != "") {
-                                    window.location = "?s=" + search + "&d=" + year_l + "-" + year_h + "&g=" + genre + "&p=1";
+                                if (year_l != "" && year_h != "") {
+                                    var year = year_l + "-" + year_h;
+                                    console.log(year);
+                                } else {
+                                    var year = "";
+                                }
+                                if (year_l != "<?php echo explode("-", $_GET["d"])[0]; ?>" || year_h != "<?php echo explode("-", $_GET["d"])[1]; ?>" || genre != "<?echo $_GET["g"]?>") {
+                                    window.location = "?s=" + search + "&d=" + year + "&g=" + genre + "&p=1";
                                 }
                             }
                         }
@@ -55,11 +61,11 @@
                         <div id="filter_properties">
                             <div id="filters">
                                 date:
-                                <input id="year_l" class="year_int" maxlength="4">
+                                <input id="year_l" class="year_int" maxlength="4" value="<?php echo explode("-", $_GET["d"])[0]; ?>">
                                 -
-                                <input id="year_h" class="year_int" maxlength="4">
+                                <input id="year_h" class="year_int" maxlength="4" value="<?php echo explode("-", $_GET["d"])[1] ?>">
                                 genre:
-                                <input id="genre_s">
+                                <input id="genre_s" value="<?echo $_GET["g"]?>">
                             </div>
                         </div>
                     </div>
@@ -76,12 +82,32 @@
                             public $desc;
                             public $year;
                             public $genre;
-                            function __construct($title, $author, $desc, $year, $genre){
-                                $this->$title = $title;
-                                $this->$author = $author;
-                                $this->$desc = $desc;
-                                $this->$year = $year;
-                                $this->$genre = $genre;                                 
+                            public $isbn;
+                            function __construct($title, $author, $desc, $year, $genre, $isbn){
+                                $this->title = $title;
+                                $this->author = $author;
+                                $this->desc = $desc;
+                                $this->year = $year;
+                                $this->genre = $genre;           
+                                $this->isbn = $isbn;                      
+                            }
+                            function get_title() {
+                                return $this->title;
+                            }
+                            function get_author() {
+                                return $this->author;
+                            }
+                            function get_desc() {
+                                return $this->desc;
+                            }
+                            function get_year() {
+                                return $this->year;
+                            }
+                            function get_genre() {
+                                return $this->genre;
+                            }
+                            function get_isbn() {
+                                return $this->isbn;
                             }
                         }
 
@@ -136,8 +162,9 @@
                         //     } else {
                         //         echo "0 results";
                         // }
+                        $books = array();
                         $nr = $result->num_rows;
-                        echo $nr;
+                        echo $nr . " results";
                     ?>
                 </b>
             </div>
@@ -149,23 +176,23 @@
                     if ($result->num_rows > 0) {
                                     // output data of each row
                                     while($row = $result->fetch_assoc()) {
-                                        // echo "id: " . $row["id"]. " - Name: " . $row["title"]. "<br>";
                                         if ($n % 4 == 0) {
                                             echo "<tr>";
                                         }
                                         $author_r = $conn->query("select name from authors where id=" . $row["writer"] . "");
                                         $author = $author_r->fetch_assoc();
+                                        $books[$n] = new Book($row["title"], $author["name"], $row["descr"], $row["year"], $row["genre"], $row["isbn"]);
                                         mt_srand($row["id"]);
                                         echo 
                                             "<td>
                                                 <div style='position: relative;'>
                                                     <div class='product_cell extrude' id='product_". $n ."'>
                                                         <div class='book_container'>
-                                                            <div class='book_cover' style=' background-color: #". str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT) .";'>
+                                                            <div class='book_cover' style=' background-color: #". str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT) .";' title='" . str_replace("'","`", $books[$n]->get_title()) . "'>
                                                                 <div style='margin: 5px; box-sizing: border-box;'>
                                                                     <b>
                                                                         <p style='color: white; text-shadow: 2px 2px 5px #888888;'>
-                                                                            " . $row["title"] . "
+                                                                            " . $books[$n]->get_title() . "
                                                                         </p>
                                                                     </b>
                                                                 </div>
@@ -174,15 +201,18 @@
                                                         <div class='book_info'>
                                                             <div style='padding: 5px; box-sizing: border-box;'>
                                                                 <b>
-                                                                    ". $author["name"]."
+                                                                    ". $books[$n]->get_author() ."
                                                                 </b>
                                                                 <br>
-                                                                    " . $row["year"] . "
+                                                                    " . $books[$n]->get_genre() . "
+                                                                <br>
+                                                                    " . $books[$n]->get_year() . "
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </td>";
+                
                                         if ($n % 4 == 3) {
                                             echo "</tr>";
                                         }
