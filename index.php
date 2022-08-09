@@ -4,6 +4,28 @@
         <link rel="stylesheet" href="assets/styles.css">
     </head>
     <body>
+        <script>
+            var admin_open = 0;
+            function show_admin(id) {
+                var label = document.getElementById(id);
+                var window = document.getElementById("options_window");
+                if (admin_open == 0) {
+                    admin_open = 1;
+                    window.style.left = "0px";
+                    label.style.left = "330px";
+                } else if (admin_open == 1) {
+                    admin_open = 0;
+                    console.log("lamao");
+                    window.style.left = "-300px";
+                    label.style.left = "30px";
+                }
+            }
+        </script>
+        <div id="options_window">
+        </div>
+        <div id="adminBox_label" class="extrude" onclick="show_admin('adminBox_label')">
+            <img src="assets/options_icon.png" id="options_icon">
+        </div>
         <div id="main_container">
             <div id="cover_container">
                 <img src="assets/notebook.jpg" id="image"/>
@@ -125,8 +147,8 @@
                         } else {
                             $page = $_GET["p"];
                         }
-                        $l_lim = $page * 20 - 20;
-                        $h_lim = 20;
+                        $l_lim = $page * 24 - 24;
+                        $h_lim = 24;
                         $sql = "select B.* from books B";
                         if ($_GET["s"] != "" or $_GET["d"] != "" or $_GET["g"] != "") {
                             $sql .= " where ";
@@ -150,10 +172,12 @@
                             $genre = $_GET["g"];
                             $sql .= "(B.genre like '%" . $genre . "%')";
                         }
+                        $all_sql = $sql;
                         $sql .= " limit " . $l_lim . ", " . $h_lim;
                         echo $sql ."<br>";
                         $conn->query("set names 'utf8'");
                         $result = $conn->query($sql);
+                        $all_res = $conn->query($all_sql);
                         // if ($result->num_rows > 0) {
                         //     // output data of each row
                         //     while($row = $result->fetch_assoc()) {
@@ -164,11 +188,32 @@
                         // }
                         $books = array();
                         $nr = $result->num_rows;
-                        echo $nr . " results";
+                        $all_nr = $all_res->num_rows;
+                        echo $all_nr . " results";
                     ?>
                 </b>
             </div>
             <!--admin box-->
+            <script>
+                var book_open = 0;
+                function book_display(id) {
+                    book_container = document.getElementById("product_" + id);
+                    book = document.getElementById("product_book_" + id);
+                    desc = document.getElementById("product_desc_" + id);
+                    info = document.getElementById("product_info_" + id);
+                    if (book_open == 0) {
+                        book_open = 1;
+                        book.style.transform = "translate(0px, 0px)";
+                        desc.style.transform = "translate(0px, 0px)";
+                        info.style.backgroundColor = "rgb(220, 220, 220)";
+                    } else if (book_open == 1) {
+                        book_open = 0;
+                        book.style.transform = "translate(0px, -130%)";
+                        desc.style.transform = "translate(0px, -100%)";
+                        info.style.backgroundColor = "white";
+                    }
+                }
+            </script>
             <div id="products">
                 <table id="product_table">
                     <?php
@@ -186,9 +231,12 @@
                                         echo 
                                             "<td>
                                                 <div style='position: relative;'>
-                                                    <div class='product_cell extrude' id='product_". $n ."'>
+                                                    <div class='product_cell extrude' id='product_". $n ."' onclick=book_display(" . $n . ")>
                                                         <div class='book_container'>
-                                                            <div class='book_cover' style=' background-color: #". str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT) .";' title='" . str_replace("'","`", $books[$n]->get_title()) . "'>
+                                                            <div class='book_desc' id='product_desc_" . $n . "'>
+                                                                " . $books[$n]->get_desc() . "
+                                                            </div>
+                                                            <div class='book_cover' id='product_book_" . $n . "' style=' background-color: #". str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT) .";' title='" . str_replace("'","`", $books[$n]->get_title()) . "'>
                                                                 <div style='margin: 5px; box-sizing: border-box;'>
                                                                     <b>
                                                                         <p style='color: white; text-shadow: 2px 2px 5px #888888;'>
@@ -198,7 +246,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class='book_info'>
+                                                        <div class='book_info' id='product_info_" . $n . "'>
                                                             <div style='padding: 5px; box-sizing: border-box;'>
                                                                 <b>
                                                                     ". $books[$n]->get_author() ."
@@ -223,6 +271,31 @@
                                 }
                     ?>
                 </table>
+            </div>
+            <div id="pages_container">
+                <div id="pages">
+                    <b>
+                        <?php
+                            if ($page != 1) {
+                                echo 
+                                    "<a href='?s=" . $search . "&d=" . $_GET["d"] . "&g=" . $_GET["g"] . "&p=" . ($page - 1) . "'>
+                                        <
+                                    </a>";
+                            } else {
+                                echo "< ";
+                            }
+                            echo $page;
+                            if ($page * 20 < $all_nr) {
+                                echo
+                                    "<a href='?s=" . $search . "&d=" . $_GET["d"] . "&g=" . $_GET["g"] . "&p=" . ($page +1) . "'>
+                                        >
+                                    </a>";
+                            } else {
+                                echo " >";
+                            }
+                        ?> 
+                    </b> 
+                </div>
             </div>
         </div>
     </body>
