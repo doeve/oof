@@ -343,12 +343,12 @@
     <hr style="transform: translate(-50%, 10px);">
     <div id="command_container">
         <div id="command_tools">
-            <form style="margin: 0px; display: inline-block;" role="presentation">
+            <div style="margin: 0px; display: inline-block;" role="presentation">
                 <input id="search_bar" name="s" class="extrude" placeholder="go nuts" style="height: 25px" value="<?php echo $_GET["s"] ?>">
-                <button type="submit" id="search_button" class="extrude">
+                <button id="search_button" class="extrude" onclick="search()">
                     <img src="assets/search_icon.png" id="search_image">
                 </button>
-            </form>
+            </div>
             <script>
                 var filter_open = 0;
                 function filter_expand(id) {
@@ -380,6 +380,21 @@
                             window.location = "?s=" + search + "&d=" + year + "&g=" + genre + "&p=1";
                         }
                     }
+                }
+
+                function search() {
+                    var year_l = document.getElementById("year_l").value;
+                    var year_h = document.getElementById("year_h").value;
+                    var genre = document.getElementById("genre_s").value;
+                    var search = document.getElementById("search_bar").value;
+                    if (year_l != "" && year_h != "") {
+                        var year = year_l + "-" + year_h;
+                        console.log(year);
+                    } else {
+                        var year = "";
+                    }
+                    // console.log("?s=" + search + "&d=" + year + "&g=" + genre + "&p=1");
+                    window.location = "?s=" + search + "&d=" + year + "&g=" + genre + "&p=1";
                 }
             </script>
             <div id="filter_container" class="extrude">
